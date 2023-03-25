@@ -1,4 +1,14 @@
+import pytest
 import subprocess
+
+@pytest.fixture(autouse=True)
+def setup_and_teardown():
+    # Setup
+
+    yield
+
+    # Teardown
+    subprocess.call(['docker', 'image', 'prune', '-af'])
 
 def test_build_docker_base_images_step_given_docker_registry_name_should_build_docker_image():
     registry = 'exampleplatformacr.azurecr.io'

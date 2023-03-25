@@ -1,0 +1,16 @@
+ARG BASE_IMAGE
+
+FROM $BASE_IMAGE
+
+ARG DLL_ENTRYPOINT
+ENV ENTRYPOINT=$DLL_ENTRYPOINT
+
+WORKDIR /app
+
+COPY app .
+
+RUN chown app:app  /app
+
+USER app:app
+
+ENTRYPOINT ["sh", "-c", "dotnet ${ENTRYPOINT}"]

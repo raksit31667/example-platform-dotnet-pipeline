@@ -1,0 +1,25 @@
+trigger:
+  - main
+
+pool:
+  vmImage: ubuntu-latest
+
+jobs:
+  - job: unit_test
+    displayName: Unit test
+    steps:
+      - task: UsePythonVersion@0
+        displayName: Use Python 3.9
+        inputs:
+          versionSpec: 3.9
+
+      - bash: |
+          python -m pip install --upgrade pip
+          pip install pipenv
+        displayName: Install pipenv
+
+      - bash: pipenv install
+        displayName: Install dependencies
+
+      - bash: pipenv run pytest
+        displayName: Run unit tests

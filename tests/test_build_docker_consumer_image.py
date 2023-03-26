@@ -16,7 +16,7 @@ def test_build_docker_consumer_image_step_given_mandatory_arguments_should_build
     registry = 'exampleplatformacr.azurecr.io'
     repository = 'consumer'
     dll_file_name = 'Consumer.dll'
-    build_directory = 'tests'
+    build_directory = 'tests/fixtures'
     build_number = '0.0.0'
     docker_image_tag = f'{registry}/{repository}:{build_number}'
 
@@ -30,7 +30,7 @@ def test_build_docker_consumer_image_step_given_no_build_number_should_build_doc
     registry = 'exampleplatformacr.azurecr.io'
     repository = 'consumer'
     dll_file_name = 'Consumer.dll'
-    build_directory = 'tests'
+    build_directory = 'tests/fixtures'
     docker_image_tag = f'{registry}/{repository}:latest'
 
     exit_code = subprocess.call(['./consumer/steps/build_docker_consumer_image.sh', registry, repository, dll_file_name, build_directory])

@@ -19,7 +19,7 @@ stages:
 
       - job: unit_test
         displayName: Unit test
-        dependsOn: lint_and_test
+        dependsOn: lint
         steps:
           - task: UsePythonVersion@0
             displayName: Use Python 3.9

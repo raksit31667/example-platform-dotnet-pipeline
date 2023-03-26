@@ -4,22 +4,35 @@ trigger:
 pool:
   vmImage: ubuntu-20.04
 
-jobs:
-  - job: unit_test
-    displayName: Unit test
-    steps:
-      - task: UsePythonVersion@0
-        displayName: Use Python 3.9
-        inputs:
-          versionSpec: 3.9
+stages:
+  - stage: lint_and_test
+    displayName: Lint and test
+    jobs:
+      - job: lint
+        displayName: Lint
+        steps:
+          - bash: ./platform/steps/shell_linting.sh $(pwd)/platform
+            displayName: Lint platform Bash scripts
 
-      - bash: |
-          python -m pip install --upgrade pip
-          pip install pipenv
-        displayName: Install pipenv
+          - bash: ./platform/steps/shell_linting.sh $(pwd)/consumer
+            displayName: Lint consumer Bash scripts
 
-      - bash: pipenv install
-        displayName: Install dependencies
+      - job: unit_test
+        displayName: Unit test
+        dependsOn: lint_and_test
+        steps:
+          - task: UsePythonVersion@0
+            displayName: Use Python 3.9
+            inputs:
+              versionSpec: 3.9
 
-      - bash: pipenv run pytest
-        displayName: Run unit tests
+          - bash: |
+              python -m pip install --upgrade pip
+              pip install pipenv
+            displayName: Install pipenv
+
+          - bash: pipenv install
+            displayName: Install dependencies
+
+          - bash: pipenv run pytest
+            displayName: Run unit tests

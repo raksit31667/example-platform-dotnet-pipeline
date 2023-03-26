@@ -12,10 +12,10 @@ stages:
         displayName: Lint
         steps:
           - bash: ./platform/steps/shell_linting.sh $(pwd)/platform
-            displayName: Lint platform Bash scripts
+            displayName: Lint platform Shell scripts
 
           - bash: ./platform/steps/shell_linting.sh $(pwd)/consumer
-            displayName: Lint consumer Bash scripts
+            displayName: Lint consumer Shell scripts
 
           - bash: ./platform/steps/dockerfile_linting.sh $(pwd)/docker
             displayName: Lint Dockerfile

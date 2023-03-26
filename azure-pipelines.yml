@@ -17,6 +17,9 @@ stages:
           - bash: ./platform/steps/shell_linting.sh $(pwd)/consumer
             displayName: Lint consumer Bash scripts
 
+          - bash: ./platform/steps/dockerfile_linting.sh $(pwd)/docker
+            displayName: Lint Dockerfile
+
       - job: unit_test
         displayName: Unit test
         dependsOn: lint

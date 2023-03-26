@@ -31,9 +31,10 @@ fi
 export DOCKER_BUILDKIT=1
 
 SCRIPT_DIRECTORY="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOCKERFILE_DIRECTORY="$(cd "$SCRIPT_DIRECTORY/../../docker/application" && pwd)"
 
 docker build \
-  -f "$SCRIPT_DIRECTORY"/Dockerfile \
+  -f "$DOCKERFILE_DIRECTORY"/Dockerfile \
   --build-arg BASE_IMAGE="$DOCKER_REGISTRY/base-application" \
   --build-arg DLL_ENTRYPOINT="**$DLL_FILE_NAME" \
   -t "$DOCKER_REGISTRY/$DOCKER_REPOSITORY:$BUILD_NUMBER" \

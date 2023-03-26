@@ -12,8 +12,8 @@ fi
 export DOCKER_BUILDKIT=1
 
 SCRIPT_DIRECTORY="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-BASE_IMAGES_DIRECTORY="$(cd "$SCRIPT_DIRECTORY/../../docker_base_images" && pwd)"
+DOCKERFILE_DIRECTORY="$(cd "$SCRIPT_DIRECTORY/../../docker/base-application" && pwd)"
 
 echo "Building application as base-application..."
-docker build -t "$DOCKER_REGISTRY/base-application" "$BASE_IMAGES_DIRECTORY/application"
+docker build -t "$DOCKER_REGISTRY/base-application" "$DOCKERFILE_DIRECTORY"
 echo

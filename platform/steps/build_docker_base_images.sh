@@ -20,6 +20,6 @@ echo
 
 BASE_APPLICATION_DOCKERFILE_DIRECTORY="$(cd "$SCRIPT_DIRECTORY/../../docker/base_application" && pwd)"
 
-echo "Building application based on base-application..."
+echo "Building Docker base image for running .NET application..."
 docker build -t "$DOCKER_REGISTRY/base-application" "$BASE_APPLICATION_DOCKERFILE_DIRECTORY"
 echo

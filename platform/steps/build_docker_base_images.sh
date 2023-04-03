@@ -4,11 +4,6 @@ set -euo pipefail
 
 DOCKER_REGISTRY=$1
 
-if [[ -z "$DOCKER_REGISTRY" ]]; then
-  echo "DOCKER_REGISTRY argument is missing."
-  exit 1
-fi
-
 SCRIPT_DIRECTORY="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 export DOCKER_BUILDKIT=1

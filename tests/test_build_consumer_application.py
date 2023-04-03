@@ -1,3 +1,4 @@
+import os
 import pytest
 import subprocess
 
@@ -14,7 +15,8 @@ def setup_and_teardown():
 
 def test_build_consumer_application_step_given_mandatory_arguments_should_build_dotnet_application():
     registry = 'exampleplatformacr.azurecr.io'
-    project_directory = './tests/fixtures/dotnet/project'
+    current_directory = os.getcwd()
+    project_directory = f'{current_directory}/tests/fixtures/dotnet/project'
     package_name = 'Consumer.WebApi'
     build_number = '1.2.3'
 
@@ -24,7 +26,8 @@ def test_build_consumer_application_step_given_mandatory_arguments_should_build_
 
 def test_build_consumer_application_step_given_mandatory_arguments_without_build_number_should_build_dotnet_application_with_zero_version():
     registry = 'exampleplatformacr.azurecr.io'
-    project_directory = './tests/fixtures/dotnet/project'
+    current_directory = os.getcwd()
+    project_directory = f'{current_directory}/tests/fixtures/dotnet/project'
     package_name = 'Consumer.WebApi'
 
     exit_code = subprocess.call(['./consumer/steps/build_consumer_application.sh', registry, project_directory, package_name])
@@ -45,16 +48,9 @@ def test_build_consumer_application_step_given_no_project_directory_should_exit_
 
 def test_build_consumer_application_step_given_no_package_name_should_exit_with_status_code_1():
     registry = 'exampleplatformacr.azurecr.io'
-    project_directory = './tests/fixtures/dotnet/project'
+    current_directory = os.getcwd()
+    project_directory = f'{current_directory}/tests/fixtures/dotnet/project'
 
     exit_code = subprocess.call(['./consumer/steps/build_consumer_application.sh', registry, project_directory])
-
-    assert exit_code == 1
-
-def test_build_consumer_application_step_given_no_dll_file_name_should_exit_with_status_code_1():
-    registry = 'exampleplatformacr.azurecr.io'
-    repository = 'consumer'
-
-    exit_code = subprocess.call(['./consumer/steps/build_consumer_application.sh', registry, repository])
 
     assert exit_code == 1

@@ -18,8 +18,6 @@ jobs:
         value: $[counter(variables['buildDate'], 1)]
       - name: buildNumber
         value: $(buildDate).$(buildRevision)
-      - name: buildRepositoryName
-        value: $[split(variables['Build.Repository.Name'], '/')[1]]
     steps:
       - checkout: self
         persistCredentials: true
@@ -33,10 +31,8 @@ jobs:
           containerRegistry: ${{ parameters.containerRegistryServiceConnection }}
 
       - bash: |
-          echo $(Build.Repository.Name)
-          echo ${{ split(variables['Build.Repository.Name'], '/')[0] }}
-          echo ${{ split(variables['Build.Repository.Name'], '/')[1] }}
-        workingDirectory: $(Build.SourcesDirectory)/$(buildRepositoryName)
+          echo '##vso[task.setvariable variable=buildRepositoryName]${{ split(variables['Build.Repository.Name'], '/')[1] }}'
+        displayName: Remove GitHub user from Build.Repository.Name
 
       - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/build_consumer_application.sh ${{ parameters.containerRegistryUrl }} $(pwd) ${{ parameters.packageName }} $(buildNumber)
         workingDirectory: $(Build.SourcesDirectory)/$(buildRepositoryName)

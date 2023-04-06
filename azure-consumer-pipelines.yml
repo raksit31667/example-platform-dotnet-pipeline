@@ -1,0 +1,22 @@
+pool:
+  vmImage: ubuntu-20.04
+
+parameters:
+  - name: packageName
+    type: string
+  - name: ddlFileName
+    type: string
+
+variables:
+  - name: dockerRegistryName
+    value: exampleplatformacr
+
+stages:
+  - stage: build_and_push
+    displayName: Build & Push Docker image to registry
+    jobs:
+      - template: consumer/jobs/build.yml@platform
+        parameters:
+          dockerRegistry: $(dockerRegistryName)
+          packageName: ${{ parameters.packageName }}
+          ddlFileName: ${{ parameters.ddlFileName }}

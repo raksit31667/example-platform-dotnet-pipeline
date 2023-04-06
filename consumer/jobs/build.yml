@@ -1,0 +1,38 @@
+parameters:
+  - name: dockerRegistry
+    type: string
+  - name: packageName
+    type: string
+  - name: ddlFileName
+    type: string
+
+variables:
+  - name: buildDate
+    value: $[format('{0:yyyy}.{0:MM}.{0:dd}', pipeline.startTime)]
+  - name: buildRevision
+    value: $[counter(variables['buildDate'], 1)]
+  - name: buildNumber
+    value: $(buildDate).$(buildRevision)
+
+jobs:
+  - job: build_and_push
+    displayName: Build & Push Docker image to registry
+    steps:
+      - checkout: self
+        persistCredentials: true
+
+      - checkout: platform
+
+      - task: Docker@2
+        displayName: Login to ACR
+        inputs:
+          command: login
+          containerRegistry: ${{ parameters.dockerRegistry }}
+
+      - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/build_consumer_application.sh $(dockerRegistryName) $(pwd) $(packageName) $(buildNumber)
+        workingDirectory: $(Build.SourcesDirectory)/$(Build.Repository.Name)
+        displayName: Build an application
+
+      - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/build_docker_consumer_image.sh $(dockerRegistryName) $(Build.Repository.Name) $(ddlFileName) $(pwd) $(buildNumber)
+        workingDirectory: $(Build.SourcesDirectory)/$(Build.Repository.Name)
+        displayName: Build Docker image

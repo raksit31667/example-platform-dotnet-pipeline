@@ -1,5 +1,7 @@
 parameters:
-  - name: dockerRegistry
+  - name: containerRegistryUrl
+    type: string
+  - name: containerRegistryServiceConnection
     type: string
   - name: packageName
     type: string
@@ -28,12 +30,12 @@ jobs:
         displayName: Login to ACR
         inputs:
           command: login
-          containerRegistry: ${{ parameters.dockerRegistry }}
+          containerRegistry: ${{ parameters.containerRegistryServiceConnection }}
 
-      - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/build_consumer_application.sh $(dockerRegistryName) $(pwd) $(packageName) $(buildNumber)
+      - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/build_consumer_application.sh ${{ parameters.containerRegistryUrl }} $(pwd) $(packageName) $(buildNumber)
         workingDirectory: $(Build.SourcesDirectory)/$(buildRepositoryName)
         displayName: Build an application
 
-      - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/build_docker_consumer_image.sh $(dockerRegistryName) $(buildRepositoryName) $(ddlFileName) $(pwd) $(buildNumber)
+      - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/build_docker_consumer_image.sh ${{ parameters.containerRegistryUrl }} $(buildRepositoryName) $(ddlFileName) $(pwd) $(buildNumber)
         workingDirectory: $(Build.SourcesDirectory)/$(buildRepositoryName)
         displayName: Build Docker image

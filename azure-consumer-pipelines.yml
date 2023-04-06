@@ -5,7 +5,9 @@ parameters:
     type: string
 
 variables:
-  - name: dockerRegistryName
+  - name: containerRegistryUrl
+    value: exampleplatformacr.azurecr.io
+  - name: containerRegistryServiceConnection
     value: exampleplatformacr
 
 stages:
@@ -14,6 +16,7 @@ stages:
     jobs:
       - template: consumer/jobs/build.yml@platform
         parameters:
-          dockerRegistry: $(dockerRegistryName)
+          containerRegistryUrl: $(containerRegistryUrl)
+          containerRegistryServiceConnection: $(containerRegistryServiceConnection)
           packageName: ${{ parameters.packageName }}
           ddlFileName: ${{ parameters.ddlFileName }}

@@ -1,9 +1,6 @@
 trigger:
   - main
 
-pool:
-  vmImage: ubuntu-20.04
-
 variables:
   - name: containerRegistryUrl
     value: exampleplatformacr.azurecr.io

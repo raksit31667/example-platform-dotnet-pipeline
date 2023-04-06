@@ -6,17 +6,16 @@ parameters:
   - name: ddlFileName
     type: string
 
-variables:
-  - name: buildDate
-    value: $[format('{0:yyyy}.{0:MM}.{0:dd}', pipeline.startTime)]
-  - name: buildRevision
-    value: $[counter(variables['buildDate'], 1)]
-  - name: buildNumber
-    value: $(buildDate).$(buildRevision)
-
 jobs:
   - job: build_and_push
     displayName: Build & Push Docker image to registry
+    variables:
+      - name: buildDate
+        value: $[format('{0:yyyy}.{0:MM}.{0:dd}', pipeline.startTime)]
+      - name: buildRevision
+        value: $[counter(variables['buildDate'], 1)]
+      - name: buildNumber
+        value: $(buildDate).$(buildRevision)
     steps:
       - checkout: self
         persistCredentials: true

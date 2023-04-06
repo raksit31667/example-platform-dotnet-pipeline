@@ -34,7 +34,8 @@ jobs:
 
       - bash: |
           echo $(Build.Repository.Name)
-          echo ${{ split(variables['Build.Repository.Name'], '/') }}
+          echo ${{ split(variables['Build.Repository.Name'], '/')[0] }}
+          echo ${{ split(variables['Build.Repository.Name'], '/')[1] }}
         workingDirectory: $(Build.SourcesDirectory)/$(buildRepositoryName)
 
       - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/build_consumer_application.sh ${{ parameters.containerRegistryUrl }} $(pwd) ${{ parameters.packageName }} $(buildNumber)

@@ -33,8 +33,8 @@ jobs:
           containerRegistry: ${{ parameters.containerRegistryServiceConnection }}
 
       - bash: |
-          pwd
-          ls
+          echo $(Build.Repository.Name)
+          echo $(buildRepositoryName)
         workingDirectory: $(Build.SourcesDirectory)/$(buildRepositoryName)
 
       - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/build_consumer_application.sh ${{ parameters.containerRegistryUrl }} $(pwd) ${{ parameters.packageName }} $(buildNumber)

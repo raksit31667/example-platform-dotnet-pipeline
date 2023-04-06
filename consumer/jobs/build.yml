@@ -32,6 +32,10 @@ jobs:
           command: login
           containerRegistry: ${{ parameters.containerRegistryServiceConnection }}
 
+      - bash: |
+          pwd
+          ls
+
       - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/build_consumer_application.sh ${{ parameters.containerRegistryUrl }} $(pwd) ${{ parameters.packageName }} $(buildNumber)
         workingDirectory: $(Build.SourcesDirectory)/$(buildRepositoryName)
         displayName: Build an application

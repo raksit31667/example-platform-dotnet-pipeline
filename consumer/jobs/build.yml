@@ -32,10 +32,10 @@ jobs:
           command: login
           containerRegistry: ${{ parameters.containerRegistryServiceConnection }}
 
-      - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/build_consumer_application.sh ${{ parameters.containerRegistryUrl }} $(pwd) $(packageName) $(buildNumber)
+      - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/build_consumer_application.sh ${{ parameters.containerRegistryUrl }} $(pwd) ${{ parameters.packageName }} $(buildNumber)
         workingDirectory: $(Build.SourcesDirectory)/$(buildRepositoryName)
         displayName: Build an application
 
-      - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/build_docker_consumer_image.sh ${{ parameters.containerRegistryUrl }} $(buildRepositoryName) $(ddlFileName) $(pwd) $(buildNumber)
+      - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/build_docker_consumer_image.sh ${{ parameters.containerRegistryUrl }} $(buildRepositoryName) ${{ parameters.packageName }} $(pwd) $(buildNumber)
         workingDirectory: $(Build.SourcesDirectory)/$(buildRepositoryName)
         displayName: Build Docker image

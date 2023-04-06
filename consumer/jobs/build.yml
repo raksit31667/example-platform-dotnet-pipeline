@@ -35,6 +35,7 @@ jobs:
       - bash: |
           pwd
           ls
+        workingDirectory: $(Build.SourcesDirectory)/$(buildRepositoryName)
 
       - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/build_consumer_application.sh ${{ parameters.containerRegistryUrl }} $(pwd) ${{ parameters.packageName }} $(buildNumber)
         workingDirectory: $(Build.SourcesDirectory)/$(buildRepositoryName)

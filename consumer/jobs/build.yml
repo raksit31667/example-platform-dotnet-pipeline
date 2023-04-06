@@ -16,6 +16,8 @@ jobs:
         value: $[counter(variables['buildDate'], 1)]
       - name: buildNumber
         value: $(buildDate).$(buildRevision)
+      - name: buildRepositoryName
+        value: $[split(variables['Build.Repository.Name'], '/')[1]]
     steps:
       - checkout: self
         persistCredentials: true
@@ -32,6 +34,6 @@ jobs:
         workingDirectory: $(Build.SourcesDirectory)/$(Build.Repository.Name)
         displayName: Build an application
 
-      - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/build_docker_consumer_image.sh $(dockerRegistryName) $(Build.Repository.Name) $(ddlFileName) $(pwd) $(buildNumber)
+      - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/build_docker_consumer_image.sh $(dockerRegistryName) $(buildRepositoryName) $(ddlFileName) $(pwd) $(buildNumber)
         workingDirectory: $(Build.SourcesDirectory)/$(Build.Repository.Name)
         displayName: Build Docker image

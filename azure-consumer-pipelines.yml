@@ -9,6 +9,12 @@ variables:
     value: exampleplatformacr.azurecr.io
   - name: containerRegistryServiceConnection
     value: exampleplatformacr
+  - name: buildDate
+    value: $[format('{0:yyyy}.{0:MM}.{0:dd}', pipeline.startTime)]
+  - name: buildRevision
+    value: $[counter(variables['buildDate'], 1)]
+  - name: buildNumber
+    value: $(buildDate).$(buildRevision)
 
 stages:
   - stage: build_and_push
@@ -20,3 +26,13 @@ stages:
           containerRegistryServiceConnection: $(containerRegistryServiceConnection)
           packageName: ${{ parameters.packageName }}
           ddlFileName: ${{ parameters.ddlFileName }}
+          buildNumber: $(buildNumber)
+
+  - stage: deploy_to_aca
+    displayName: Deploy to ACA
+    dependsOn:
+      - build_and_push
+    jobs:
+      - template: consumer/jobs/deploy-to-aca.yml@platform
+        parameters:
+          buildNumber: $(buildNumber)

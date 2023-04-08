@@ -7,17 +7,12 @@ parameters:
     type: string
   - name: ddlFileName
     type: string
+  - name: buildNumber
+    type: string
 
 jobs:
   - job: build_and_push
     displayName: Build & Push Docker image to registry
-    variables:
-      - name: buildDate
-        value: $[format('{0:yyyy}.{0:MM}.{0:dd}', pipeline.startTime)]
-      - name: buildRevision
-        value: $[counter(variables['buildDate'], 1)]
-      - name: buildNumber
-        value: $(buildDate).$(buildRevision)
     steps:
       - checkout: self
         persistCredentials: true
@@ -34,11 +29,11 @@ jobs:
           echo '##vso[task.setvariable variable=buildRepositoryName]${{ split(variables['Build.Repository.Name'], '/')[1] }}'
         displayName: Remove GitHub user from Build.Repository.Name
 
-      - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/build_consumer_application.sh ${{ parameters.containerRegistryUrl }} $(pwd) ${{ parameters.packageName }} $(buildNumber)
+      - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/build_consumer_application.sh ${{ parameters.containerRegistryUrl }} $(pwd) ${{ parameters.packageName }} ${{ parameters.buildNumber }}
         workingDirectory: $(Build.SourcesDirectory)/$(buildRepositoryName)
         displayName: Build an application
 
-      - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/build_docker_consumer_image.sh ${{ parameters.containerRegistryUrl }} $(buildRepositoryName) ${{ parameters.packageName }} $(pwd) $(buildNumber)
+      - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/build_docker_consumer_image.sh ${{ parameters.containerRegistryUrl }} $(buildRepositoryName) ${{ parameters.packageName }} $(pwd) ${{ parameters.buildNumber }}
         workingDirectory: $(Build.SourcesDirectory)/$(buildRepositoryName)
         displayName: Build Docker image
 
@@ -48,4 +43,4 @@ jobs:
           command: push
           containerRegistry: ${{ parameters.containerRegistryServiceConnection }}
           repository: $(buildRepositoryName)
-          tags: $(buildNumber)
+          tags: ${{ parameters.buildNumber }}

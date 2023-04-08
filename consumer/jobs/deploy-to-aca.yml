@@ -1,0 +1,88 @@
+parameters:
+  - name: buildNumber
+    type: string
+
+variables:
+  - group: exampleplatformaca
+  - name: terraformVersion
+    value: '1.3.0'
+  - name: azureSubscriptionServiceConnectionName
+    value: example-platform-azure-kubernetes
+  - name: terraformStateResourceGroupName
+    value: example-platform-azure-kubernetes
+  - name: terraformStateStorageAccountName
+    value: exampleplatformacastate
+  - name: terraformStateStorageAccountContainerName
+    value: terraform-state
+  - name: deploymentEnvironment
+    value: exampleplatformaca
+  - name: containerRegistryUrl
+    type: string
+
+jobs:
+  - deployment: deploy
+    displayName: Deploy
+    environment: exampleplatformaca
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - checkout: self
+              persistCredentials: true
+
+            - checkout: platform
+
+            - bash: |
+                echo '##vso[task.setvariable variable=buildRepositoryName]${{ split(variables['Build.Repository.Name'], '/')[1] }}'
+              displayName: Remove GitHub user from Build.Repository.Name
+
+            - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+              displayName: Install Terraform
+              inputs:
+                terraformVersion: $(terraformVersion)
+
+            - bash: |
+                echo repository_name = $(buildRepositoryName) >> terraform.tfvars
+                echo aca_environment_id = $(acaEnvironmentId) >> terraform.tfvars
+                echo aca_user_identity_id = $(acaUserIdentityId) >> terraform.tfvars
+                echo acr_url = $(containerRegistryUrl) >> terraform.tfvars
+                echo build_number = ${{ parameters.buildNumber }} >> terraform.tfvars
+              displayName: Generate terraform.tfvars file
+              workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform
+
+            - task: TerraformCLI@0
+              displayName: Terraform init
+              inputs:
+                command: init
+                backendType: azurerm
+                backendServiceArm: $(azureSubscriptionServiceConnectionName)
+                backendAzureRmResourceGroupName: $(terraformStateResourceGroupName)
+                backendAzureRmStorageAccountName: $(terraformStateStorageAccountName)
+                backendAzureRmContainerName: $(terraformStateStorageAccountContainerName)
+                backendAzureRmKey: $(buildRepositoryName).tfstate
+                workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform
+
+            - task: TerraformCLI@0
+              displayName: Terraform validate
+              inputs:
+                command: validate
+                backendType: azurerm
+                environmentServiceName: $(azureSubscriptionServiceConnectionName)
+                workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform
+
+            - task: TerraformCLI@0
+              displayName: Terraform plan
+              inputs:
+                command: plan
+                backendType: azurerm
+                commandOptions: -out=tfplan -input=false
+                environmentServiceName: $(azureSubscriptionServiceConnectionName)
+                workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform
+
+            - task: TerraformCLI@0
+              displayName: Terraform apply
+              inputs:
+                command: apply
+                backendType: azurerm
+                environmentServiceName: $(azureSubscriptionServiceConnectionName)
+                workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform

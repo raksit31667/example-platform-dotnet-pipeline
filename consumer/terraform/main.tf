@@ -46,5 +46,10 @@ resource "azurerm_container_app" "aca" {
     external_enabled           = true
     target_port                = 8080
     transport                  = "auto"
+
+    traffic_weight {
+      percentage      = 100
+      latest_revision = true
+    }
   }
 }

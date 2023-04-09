@@ -54,10 +54,10 @@ jobs:
               inputs:
                 command: init
                 backendType: azurerm
-                backendServiceArm: $(azureSubscriptionServiceConnectionName)
-                backendAzureRmResourceGroupName: $(terraformStateResourceGroupName)
-                backendAzureRmStorageAccountName: $(terraformStateStorageAccountName)
-                backendAzureRmContainerName: $(terraformStateStorageAccountContainerName)
+                backendServiceArm: ${{ variables.azureSubscriptionServiceConnectionName }}
+                backendAzureRmResourceGroupName: ${{ variables.terraformStateResourceGroupName }}
+                backendAzureRmStorageAccountName: ${{ variables.terraformStateStorageAccountName }}
+                backendAzureRmContainerName: ${{ variables.terraformStateStorageAccountContainerName }}
                 backendAzureRmKey: $(buildRepositoryName).tfstate
                 workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform
 
@@ -66,7 +66,7 @@ jobs:
               inputs:
                 command: validate
                 backendType: azurerm
-                environmentServiceName: $(azureSubscriptionServiceConnectionName)
+                environmentServiceName: ${{ variables.azureSubscriptionServiceConnectionName }}
                 workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform
 
             - task: TerraformCLI@0
@@ -75,7 +75,7 @@ jobs:
                 command: plan
                 backendType: azurerm
                 commandOptions: -out=tfplan -input=false
-                environmentServiceName: $(azureSubscriptionServiceConnectionName)
+                environmentServiceName: ${{ variables.azureSubscriptionServiceConnectionName }}
                 workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform
 
             - task: TerraformCLI@0
@@ -83,5 +83,5 @@ jobs:
               inputs:
                 command: apply
                 backendType: azurerm
-                environmentServiceName: $(azureSubscriptionServiceConnectionName)
+                environmentServiceName: ${{ variables.azureSubscriptionServiceConnectionName }}
                 workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform

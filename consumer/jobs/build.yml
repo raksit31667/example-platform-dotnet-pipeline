@@ -33,7 +33,7 @@ jobs:
         workingDirectory: $(Build.SourcesDirectory)/$(buildRepositoryName)
         displayName: Build an application
 
-      - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/build_docker_consumer_image.sh ${{ parameters.containerRegistryUrl }} $(buildRepositoryName) ${{ parameters.packageName }} $(pwd) ${{ parameters.buildNumber }}
+      - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/build_docker_consumer_image.sh ${{ parameters.containerRegistryUrl }} $(buildRepositoryName) ${{ parameters.ddlFileName }} $(pwd) ${{ parameters.buildNumber }}
         workingDirectory: $(Build.SourcesDirectory)/$(buildRepositoryName)
         displayName: Build Docker image
 

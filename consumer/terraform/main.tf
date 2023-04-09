@@ -39,11 +39,12 @@ resource "azurerm_container_app" "aca" {
         path      = "/health"
       }
     }
+  }
 
-    ingress {
-      allow_insecure_connections = false
-      target_port                = 8080
-      transport                  = "auto"
-    }
+  ingress {
+    allow_insecure_connections = false
+    external_enabled           = true
+    target_port                = 8080
+    transport                  = "auto"
   }
 }

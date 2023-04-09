@@ -35,4 +35,5 @@ stages:
     jobs:
       - template: consumer/jobs/deploy-to-aca.yml@platform
         parameters:
+          containerRegistryUrl: $(containerRegistryUrl)
           buildNumber: $(buildNumber)

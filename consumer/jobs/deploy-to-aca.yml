@@ -41,11 +41,11 @@ jobs:
                 terraformVersion: $(terraformVersion)
 
             - bash: |
-                echo repository_name = $(buildRepositoryName) >> terraform.tfvars
-                echo aca_environment_id = $(acaEnvironmentId) >> terraform.tfvars
-                echo aca_user_identity_id = $(acaUserIdentityId) >> terraform.tfvars
-                echo acr_url = ${{ parameters.containerRegistryUrl }} >> terraform.tfvars
-                echo build_number = ${{ parameters.buildNumber }} >> terraform.tfvars
+                echo repository_name = "$(buildRepositoryName)" >> terraform.tfvars
+                echo aca_environment_id = "$(acaEnvironmentId)" >> terraform.tfvars
+                echo aca_user_identity_id = "$(acaUserIdentityId)" >> terraform.tfvars
+                echo acr_url = "${{ parameters.containerRegistryUrl }}" >> terraform.tfvars
+                echo build_number = "${{ parameters.buildNumber }}" >> terraform.tfvars
               displayName: Generate terraform.tfvars file
               workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform
 

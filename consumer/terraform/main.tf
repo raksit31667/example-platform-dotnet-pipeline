@@ -1,4 +1,5 @@
 resource "azurerm_container_app" "aca" {
+  count                        = var.cron_expression == "" ? 1 : 0
   name                         = var.repository_name
   container_app_environment_id = var.aca_environment_id
   resource_group_name          = "example-platform-azure-kubernetes"
@@ -52,12 +53,31 @@ resource "azurerm_container_app" "aca" {
       latest_revision = true
     }
   }
+}
 
-  dynamic "dapr" {
-    for_each = var.cron_expression != "" ? [1] : []
+resource "azurerm_container_app" "aca_cron" {
+  count                        = var.cron_expression != "" ? 1 : 0
+  name                         = var.repository_name
+  container_app_environment_id = var.aca_environment_id
+  resource_group_name          = "example-platform-azure-kubernetes"
+  revision_mode                = "Single"
 
-    content {
-      app_id = var.repository_name
+  identity {
+    type         = "UserAssigned"
+    identity_ids = [var.aca_user_identity_id]
+  }
+
+  registry {
+    server   = var.acr_url
+    identity = var.aca_user_identity_id
+  }
+
+  template {
+    container {
+      name   = var.repository_name
+      image  = "${var.acr_url}/${var.repository_name}:${var.build_number}"
+      cpu    = 0.25
+      memory = "0.5Gi"
     }
   }
 }
@@ -73,6 +93,6 @@ resource "azurerm_container_app_environment_dapr_component" "dapr_cronjob_bindin
 
   metadata {
     name  = "schedule"
-    value = var.cron_expression
+    value = azurerm_container_app.aca_cron.name
   }
 }

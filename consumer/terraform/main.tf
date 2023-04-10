@@ -89,14 +89,14 @@ resource "azurerm_container_app" "aca_cron" {
 resource "azurerm_container_app_environment_dapr_component" "dapr_cronjob_bindings" {
   count = var.cron_expression != "" ? 1 : 0
 
-  name                         = "${var.repository_name}-cron"
+  name                         = "${azurerm_container_app.aca_cron[0].name}"
   container_app_environment_id = var.aca_environment_id
   component_type               = "bindings.cron"
   version                      = "v1"
-  scopes                       = [var.repository_name]
+  scopes                       = [azurerm_container_app.aca_cron[0].name]
 
   metadata {
     name  = "schedule"
-    value = azurerm_container_app.aca_cron[0].name
+    value = var.cron_expression
   }
 }

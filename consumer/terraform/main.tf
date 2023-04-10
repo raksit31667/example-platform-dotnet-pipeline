@@ -99,6 +99,18 @@ resource "azurerm_container_app" "aca_cron" {
     }
   }
 
+  ingress {
+    allow_insecure_connections = false
+    external_enabled           = false
+    target_port                = 8080
+    transport                  = "auto"
+
+    traffic_weight {
+      percentage      = 100
+      latest_revision = true
+    }
+  }
+
   dapr {
     app_id = var.repository_name
   }

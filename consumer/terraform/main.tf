@@ -80,6 +80,10 @@ resource "azurerm_container_app" "aca_cron" {
       memory = "0.5Gi"
     }
   }
+
+  dapr {
+    app_id = var.repository_name
+  }
 }
 
 resource "azurerm_container_app_environment_dapr_component" "dapr_cronjob_bindings" {

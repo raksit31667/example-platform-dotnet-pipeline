@@ -17,3 +17,7 @@ variable "acr_url" {
 variable "build_number" {
   type = string
 }
+
+variable "cron_expression" {
+  type = string
+}

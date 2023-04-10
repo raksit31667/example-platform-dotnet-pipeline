@@ -52,4 +52,29 @@ resource "azurerm_container_app" "aca" {
       latest_revision = true
     }
   }
+
+  dynamic "dapr" {
+    for_each = var.cron_expression != "" ? [1] : []
+
+    content {
+      app_id = var.repository_name
+    }
+  }
+}
+
+resource "azurerm_container_app_environment_dapr_component" "dapr_cronjob_bindings" {
+  for_each = var.cron_expression != "" ? [1] : []
+
+  content {
+    name                         = "${var.repository_name}-cron"
+    container_app_environment_id = var.aca_environment_id
+    component_type               = "bindings.cron"
+    version                      = "v1"
+    scopes                       = [var.repository_name]
+
+    metadata {
+      name  = "schedule"
+      value = var.cron_expression
+    }
+  }
 }

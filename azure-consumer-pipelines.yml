@@ -3,6 +3,9 @@ parameters:
     type: string
   - name: ddlFileName
     type: string
+  - name: cronExpression
+    type: string
+    default: ""
 
 variables:
   - name: containerRegistryUrl
@@ -37,3 +40,4 @@ stages:
         parameters:
           containerRegistryUrl: $(containerRegistryUrl)
           buildNumber: $(buildNumber)
+          cronExpression: ${{ parameters.cronExpression }}

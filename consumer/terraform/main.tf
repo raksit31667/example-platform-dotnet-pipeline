@@ -78,24 +78,24 @@ resource "azurerm_container_app" "aca_cron" {
       image  = "${var.acr_url}/${var.repository_name}:${var.build_number}"
       cpu    = 0.25
       memory = "0.5Gi"
-    }
 
-    liveness_probe {
-      transport = "HTTP"
-      port      = 8080
-      path      = "/health"
-    }
+      liveness_probe {
+        transport = "HTTP"
+        port      = 8080
+        path      = "/health"
+      }
 
-    readiness_probe {
-      transport = "HTTP"
-      port      = 8080
-      path      = "/health"
-    }
+      readiness_probe {
+        transport = "HTTP"
+        port      = 8080
+        path      = "/health"
+      }
 
-    startup_probe {
-      transport = "HTTP"
-      port      = 8080
-      path      = "/health"
+      startup_probe {
+        transport = "HTTP"
+        port      = 8080
+        path      = "/health"
+      }
     }
   }
 

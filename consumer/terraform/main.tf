@@ -93,6 +93,6 @@ resource "azurerm_container_app_environment_dapr_component" "dapr_cronjob_bindin
 
   metadata {
     name  = "schedule"
-    value = azurerm_container_app.aca_cron.name
+    value = azurerm_container_app.aca_cron[0].name
   }
 }

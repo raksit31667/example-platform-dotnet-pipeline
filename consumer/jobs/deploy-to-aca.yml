@@ -49,7 +49,7 @@ jobs:
                 echo aca_user_identity_id = \"$(acaUserIdentityId)\" >> terraform.tfvars
                 echo acr_url = \"${{ parameters.containerRegistryUrl }}\" >> terraform.tfvars
                 echo build_number = \"${{ parameters.buildNumber }}\" >> terraform.tfvars
-                echo cron_expression = \"$(cronExpression)\" >> terraform.tfvars
+                echo cron_expression = \"${{ parameters.cronExpression }}\" >> terraform.tfvars
               displayName: Generate terraform.tfvars file
               workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform
 

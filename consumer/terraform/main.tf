@@ -79,6 +79,24 @@ resource "azurerm_container_app" "aca_cron" {
       cpu    = 0.25
       memory = "0.5Gi"
     }
+
+    liveness_probe {
+      transport = "HTTP"
+      port      = 8080
+      path      = "/health"
+    }
+
+    readiness_probe {
+      transport = "HTTP"
+      port      = 8080
+      path      = "/health"
+    }
+
+    startup_probe {
+      transport = "HTTP"
+      port      = 8080
+      path      = "/health"
+    }
   }
 
   dapr {

@@ -22,10 +22,6 @@ jobs:
         value: terraform-state
       - name: deploymentEnvironment
         value: exampleplatformaca
-      - name: containerRegistryUrl
-        value: ${{ parameters.containerRegistryUrl }}
-      - name: buildNumber
-        value: ${{ parameters.buildNumber }}
     strategy:
       runOnce:
         deploy:

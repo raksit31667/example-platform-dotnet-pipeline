@@ -1,11 +1,8 @@
 parameters:
-  - name: buildNumber
-    type: string
   - name: containerRegistryUrl
     type: string
-  - name: cronExpression
+  - name: buildNumber
     type: string
-    default: ""
 
 jobs:
   - deployment: deploy
@@ -25,6 +22,10 @@ jobs:
         value: terraform-state
       - name: deploymentEnvironment
         value: exampleplatformaca
+      - name: containerRegistryUrl
+        value: ${{ parameters.containerRegistryUrl }}
+      - name: buildNumber
+        value: ${{ parameters.buildNumber }}
     strategy:
       runOnce:
         deploy:
@@ -44,14 +45,17 @@ jobs:
                 terraformVersion: $(terraformVersion)
 
             - bash: |
-                echo repository_name = \"$(buildRepositoryName)\" >> terraform.tfvars
-                echo aca_environment_id = \"$(acaEnvironmentId)\" >> terraform.tfvars
-                echo aca_user_identity_id = \"$(acaUserIdentityId)\" >> terraform.tfvars
-                echo acr_url = \"${{ parameters.containerRegistryUrl }}\" >> terraform.tfvars
-                echo build_number = \"${{ parameters.buildNumber }}\" >> terraform.tfvars
-                echo cron_expression = \"${{ parameters.cronExpression }}\" >> terraform.tfvars
-              displayName: Generate terraform.tfvars file
+                cat $(Build.SourcesDirectory)/$(buildRepositoryName)/pipeline/aca/terraform.tfvars >> terraform.tfvars
+              displayName: Combine consumer-provided and platform-provided terraform.tfvars files
               workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform
+
+            - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+              displayName: Insert pipeline variables into terraform.tfvars
+              inputs:
+                rootDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline
+                targetFiles: '**/consumer/terraform/terraform.tfvars'
+                escapeType: none
+                enableTransforms: true
 
             - task: TerraformCLI@0
               displayName: Terraform init

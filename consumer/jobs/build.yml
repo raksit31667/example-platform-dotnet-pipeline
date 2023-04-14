@@ -9,9 +9,6 @@ parameters:
     type: string
   - name: buildNumber
     type: string
-  - name: cronExpression
-    type: string
-    default: ""
 
 jobs:
   - job: build_and_push

@@ -1,5 +1,5 @@
 resource "azurerm_container_app" "aca" {
-  count                        = var.cron_jobs != null ? 1 : 0
+  count                        = var.cron_jobs == null ? 1 : 0
   name                         = var.repository_name
   container_app_environment_id = var.aca_environment_id
   resource_group_name          = "example-platform-azure-kubernetes"

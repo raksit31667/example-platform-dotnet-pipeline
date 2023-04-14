@@ -18,6 +18,29 @@ variable "build_number" {
   type = string
 }
 
-variable "cron_expression" {
+variable "cpu" {
+  type = number
+}
+
+variable "memory" {
   type = string
+}
+
+variable "liveness_probe_path" {
+  type = string
+}
+
+variable "readiness_probe_path" {
+  type = string
+}
+
+variable "startup_probe_path" {
+  type = string
+}
+
+variable "cron_jobs" {
+  type = list(object({
+    name     = string
+    schedule = string
+  }))
 }

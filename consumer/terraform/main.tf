@@ -19,25 +19,25 @@ resource "azurerm_container_app" "aca" {
     container {
       name   = var.repository_name
       image  = "${var.acr_url}/${var.repository_name}:${var.build_number}"
-      cpu    = 0.25
-      memory = "0.5Gi"
+      cpu    = var.cpu
+      memory = var.memory
 
       liveness_probe {
         transport = "HTTP"
         port      = 8080
-        path      = "/health"
+        path      = var.liveness_probe_path
       }
 
       readiness_probe {
         transport = "HTTP"
         port      = 8080
-        path      = "/health"
+        path      = var.readiness_probe_path
       }
 
       startup_probe {
         transport = "HTTP"
         port      = 8080
-        path      = "/health"
+        path      = var.startup_probe_path
       }
     }
   }
@@ -76,25 +76,25 @@ resource "azurerm_container_app" "aca_cron" {
     container {
       name   = var.repository_name
       image  = "${var.acr_url}/${var.repository_name}:${var.build_number}"
-      cpu    = 0.25
-      memory = "0.5Gi"
+      cpu    = var.cpu
+      memory = var.memory
 
       liveness_probe {
         transport = "HTTP"
         port      = 8080
-        path      = "/health"
+        path      = var.liveness_probe_path
       }
 
       readiness_probe {
         transport = "HTTP"
         port      = 8080
-        path      = "/health"
+        path      = var.readiness_probe_path
       }
 
       startup_probe {
         transport = "HTTP"
         port      = 8080
-        path      = "/health"
+        path      = var.startup_probe_path
       }
     }
   }
@@ -117,9 +117,9 @@ resource "azurerm_container_app" "aca_cron" {
 }
 
 resource "azurerm_container_app_environment_dapr_component" "dapr_cronjob_bindings" {
-  count = var.cron_expression != "" ? 1 : 0
+  for_each = { for cron_job in var.cron_jobs : cron_job.name => cron_job }
 
-  name                         = "recipes"
+  name                         = each.key
   container_app_environment_id = var.aca_environment_id
   component_type               = "bindings.cron"
   version                      = "v1"
@@ -127,6 +127,6 @@ resource "azurerm_container_app_environment_dapr_component" "dapr_cronjob_bindin
 
   metadata {
     name  = "schedule"
-    value = var.cron_expression
+    value = each.value.schedule
   }
 }

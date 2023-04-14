@@ -43,4 +43,5 @@ variable "cron_jobs" {
     name     = string
     schedule = string
   }))
+  nullable = true
 }

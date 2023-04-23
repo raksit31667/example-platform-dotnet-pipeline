@@ -31,6 +31,12 @@ jobs:
           echo '##vso[task.setvariable variable=buildRepositoryName]${{ split(variables['Build.Repository.Name'], '/')[1] }}'
         displayName: Remove GitHub user from Build.Repository.Name
 
+      - task: UseDotNet@2
+        displayName: Use .NET 7.x
+        inputs:
+          packageType: sdk
+          version: 7.x
+
       - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/run_unit_tests.sh ${{ parameters.containerRegistryUrl }} $(pwd) ${{ parameters.unitTestProject }}
         workingDirectory: $(Build.SourcesDirectory)/$(buildRepositoryName)
         displayName: Run unit tests

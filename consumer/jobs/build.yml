@@ -43,11 +43,10 @@ jobs:
           testResultsFiles: '**/*.trx'
           testRunTitle: Build
 
-      - task: PublishCodeCoverageResults@1
+      - task: PublishCodeCoverageResults@2
         displayName: Publish code coverage results
         condition: succeededOrFailed()
         inputs:
-          codeCoverageTool: Cobertura
           summaryFileLocation: "$(Build.SourcesDirectory)/$(buildRepositoryName)/unit-test-results/**/coverage.cobertura.xml"
           pathToSources: $(Build.SourcesDirectory)/$(buildRepositoryName)
 

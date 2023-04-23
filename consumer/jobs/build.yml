@@ -50,7 +50,6 @@ jobs:
           codeCoverageTool: Cobertura
           summaryFileLocation: "$(Build.SourcesDirectory)/$(buildRepositoryName)/unit-test-results/**/coverage.cobertura.xml"
           pathToSources: $(Build.SourcesDirectory)/$(buildRepositoryName)
-          reportDirectory: $(Build.SourcesDirectory)/$(buildRepositoryName)/unit-test-results
 
       - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/build_consumer_application.sh ${{ parameters.containerRegistryUrl }} $(pwd) ${{ parameters.packageName }} ${{ parameters.buildNumber }}
         workingDirectory: $(Build.SourcesDirectory)/$(buildRepositoryName)

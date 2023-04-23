@@ -1,4 +1,6 @@
 parameters:
+  - name: unitTestProject
+    type: string
   - name: packageName
     type: string
   - name: ddlFileName

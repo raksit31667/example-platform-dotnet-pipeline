@@ -26,6 +26,7 @@ stages:
         parameters:
           containerRegistryUrl: $(containerRegistryUrl)
           containerRegistryServiceConnection: $(containerRegistryServiceConnection)
+          unitTestProject: ${{ parameters.unitTestProject }}
           packageName: ${{ parameters.packageName }}
           ddlFileName: ${{ parameters.ddlFileName }}
           buildNumber: $(buildNumber)

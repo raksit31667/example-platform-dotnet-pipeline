@@ -35,6 +35,22 @@ jobs:
         workingDirectory: $(Build.SourcesDirectory)/$(buildRepositoryName)
         displayName: Run unit tests
 
+      - task: PublishTestResults@2
+        displayName: Publish unit test results
+        condition: succeededOrFailed()
+        inputs:
+          testResultsFormat: VSTest
+          testResultsFiles: '**/*.trx'
+          testRunTitle: Build
+
+      - task: PublishCodeCoverageResults@1
+        displayName: Publish code coverage results
+        condition: succeededOrFailed()
+        inputs:
+          codeCoverageTool: Cobertura
+          summaryFileLocation: $(Build.SourcesDirectory)/$(Build.Repository.Name)/unit-test-results/**/coverage.cobertura.xml
+          pathToSources: $(Build.SourcesDirectory)/$(Build.Repository.Name)
+
       - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/build_consumer_application.sh ${{ parameters.containerRegistryUrl }} $(pwd) ${{ parameters.packageName }} ${{ parameters.buildNumber }}
         workingDirectory: $(Build.SourcesDirectory)/$(buildRepositoryName)
         displayName: Build an application

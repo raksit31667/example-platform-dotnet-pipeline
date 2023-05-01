@@ -23,3 +23,9 @@ BASE_APPLICATION_DOCKERFILE_DIRECTORY="$(cd "$SCRIPT_DIRECTORY/../../docker/base
 echo "Building Docker base image for running .NET application..."
 docker build -t "$DOCKER_REGISTRY/base-application" "$BASE_APPLICATION_DOCKERFILE_DIRECTORY"
 echo
+
+HTTP_STUBBING_DOCKERFILE_DIRECTORY="$(cd "$SCRIPT_DIRECTORY/../../docker/http_stubbing" && pwd)"
+
+echo "Building HTTP stubbing image for integration testing..."
+docker build -t "$DOCKER_REGISTRY/http-stubbing" "$HTTP_STUBBING_DOCKERFILE_DIRECTORY"
+echo

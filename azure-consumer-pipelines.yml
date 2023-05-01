@@ -21,7 +21,7 @@ variables:
   - name: buildNumber
     value: $(buildDate).$(buildRevision)
   - name: buildRepositoryName
-    value: $[split(variables['Build.Repository.Name'], '/')[1]]
+    value: ${{ split(variables['Build.Repository.Name'], '/')[1] }}
 
 stages:
   - stage: build_and_push

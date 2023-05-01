@@ -11,6 +11,8 @@ parameters:
     type: string
   - name: buildNumber
     type: string
+  - name: workingDirectory
+    type: string
 
 jobs:
   - job: build_and_push
@@ -27,12 +29,8 @@ jobs:
           command: login
           containerRegistry: ${{ parameters.containerRegistryServiceConnection }}
 
-      - bash: |
-          echo '##vso[task.setvariable variable=buildRepositoryName]${{ split(variables['Build.Repository.Name'], '/')[1] }}'
-        displayName: Remove GitHub user from Build.Repository.Name
-
       - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/run_unit_tests.sh ${{ parameters.containerRegistryUrl }} $(pwd) ${{ parameters.unitTestProject }}
-        workingDirectory: $(Build.SourcesDirectory)/$(buildRepositoryName)
+        workingDirectory: ${{ parameters.workingDirectory }}
         displayName: Run unit tests
 
       - task: PublishTestResults@2
@@ -48,15 +46,15 @@ jobs:
         condition: succeededOrFailed()
         inputs:
           codeCoverageTool: Cobertura
-          summaryFileLocation: "$(Build.SourcesDirectory)/$(buildRepositoryName)/unit-test-results/**/coverage.cobertura.xml"
-          pathToSources: $(Build.SourcesDirectory)/$(buildRepositoryName)
+          summaryFileLocation: "${{ parameters.workingDirectory }}/unit-test-results/**/coverage.cobertura.xml"
+          pathToSources: ${{ parameters.workingDirectory }}
 
       - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/build_consumer_application.sh ${{ parameters.containerRegistryUrl }} $(pwd) ${{ parameters.packageName }} ${{ parameters.buildNumber }}
-        workingDirectory: $(Build.SourcesDirectory)/$(buildRepositoryName)
+        workingDirectory: ${{ parameters.workingDirectory }}
         displayName: Build an application
 
       - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/build_docker_consumer_image.sh ${{ parameters.containerRegistryUrl }} $(buildRepositoryName) ${{ parameters.ddlFileName }} $(pwd) ${{ parameters.buildNumber }}
-        workingDirectory: $(Build.SourcesDirectory)/$(buildRepositoryName)
+        workingDirectory: ${{ parameters.workingDirectory }}
         displayName: Build Docker image
 
       - task: Docker@2

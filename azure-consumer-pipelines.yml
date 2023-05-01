@@ -46,3 +46,4 @@ stages:
         parameters:
           containerRegistryUrl: $(containerRegistryUrl)
           buildNumber: $(buildNumber)
+          workingDirectory: ${{ parameters.workingDirectory }}

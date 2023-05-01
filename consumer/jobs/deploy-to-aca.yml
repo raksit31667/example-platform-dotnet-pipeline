@@ -3,6 +3,8 @@ parameters:
     type: string
   - name: buildNumber
     type: string
+  - name: workingDirectory
+    type: string
 
 jobs:
   - deployment: deploy
@@ -31,17 +33,13 @@ jobs:
 
             - checkout: platform
 
-            - bash: |
-                echo '##vso[task.setvariable variable=buildRepositoryName]${{ split(variables['Build.Repository.Name'], '/')[1] }}'
-              displayName: Remove GitHub user from Build.Repository.Name
-
             - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
               displayName: Install Terraform
               inputs:
                 terraformVersion: $(terraformVersion)
 
             - bash: |
-                cat $(Build.SourcesDirectory)/$(buildRepositoryName)/pipeline/aca/terraform.tfvars >> terraform.tfvars
+                cat ${{ parameters.workingDirectory }}/pipeline/aca/terraform.tfvars >> terraform.tfvars
               displayName: Combine consumer-provided and platform-provided terraform.tfvars files
               workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform
 

@@ -24,8 +24,6 @@ jobs:
         value: terraform-state
       - name: deploymentEnvironment
         value: exampleplatformaca
-      - name: azureSubscription
-        value: raksit31667
     strategy:
       runOnce:
         deploy:
@@ -93,7 +91,7 @@ jobs:
             - task: AzureCLI@2
               displayName: ACA Readiness check
               inputs:
-                azureSubscription: ${{ variables.azureSubscription }}
+                azureSubscription: ${{ variables.azureSubscriptionServiceConnectionName }}
                 scriptType: bash
                 scriptLocation: scriptPath
                 scriptPath: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/aca_readiness_check.sh

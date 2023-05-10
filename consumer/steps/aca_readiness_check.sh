@@ -8,7 +8,7 @@ BUILD_NUMBER=$3
 
 az config set extension.use_dynamic_install=yes_without_prompt # Install extension automatically
 
-PROVISIONING_STATE=""
+PROVISIONING_STATE="Provisioning"
 while [[ "$PROVISIONING_STATE" == "Provisioning" ]]; do
   echo "Waiting for provisioning..."
   sleep 10

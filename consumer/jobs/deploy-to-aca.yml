@@ -16,7 +16,7 @@ jobs:
         value: '1.3.0'
       - name: azureSubscriptionServiceConnectionName
         value: example-platform-azure-kubernetes
-      - name: terraformStateResourceGroupName
+      - name: resourceGroupName
         value: example-platform-azure-kubernetes
       - name: terraformStateStorageAccountName
         value: exampleplatformacastate
@@ -24,6 +24,8 @@ jobs:
         value: terraform-state
       - name: deploymentEnvironment
         value: exampleplatformaca
+      - name: azureSubscription
+        value: raksit31667
     strategy:
       runOnce:
         deploy:
@@ -57,7 +59,7 @@ jobs:
                 command: init
                 backendType: azurerm
                 backendServiceArm: ${{ variables.azureSubscriptionServiceConnectionName }}
-                backendAzureRmResourceGroupName: ${{ variables.terraformStateResourceGroupName }}
+                backendAzureRmResourceGroupName: ${{ variables.resourceGroupName }}
                 backendAzureRmStorageAccountName: ${{ variables.terraformStateStorageAccountName }}
                 backendAzureRmContainerName: ${{ variables.terraformStateStorageAccountContainerName }}
                 backendAzureRmKey: $(buildRepositoryName).tfstate
@@ -87,3 +89,12 @@ jobs:
                 backendType: azurerm
                 environmentServiceName: ${{ variables.azureSubscriptionServiceConnectionName }}
                 workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform
+
+            - task: AzureCLI@2
+              displayName: ACA Readiness check
+              inputs:
+                azureSubscription: ${{ variables.azureSubscription }}
+                scriptType: bash
+                scriptLocation: scriptPath
+                scriptPath: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/aca_readiness_check.sh
+                arguments: '$(buildRepositoryName) $(resourceGroupName) $(buildNumber)'

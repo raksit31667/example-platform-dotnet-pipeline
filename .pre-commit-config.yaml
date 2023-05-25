@@ -1,0 +1,6 @@
+repos:
+  - repo: https://github.com/raksit31667/example-platform-pre-commit.git
+    rev: v1.1.0
+    hooks:
+      - id: shell_linting
+      - id: dockerfile_linting

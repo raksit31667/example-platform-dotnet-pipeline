@@ -24,26 +24,18 @@ variables:
     value: ${{ split(variables['Build.Repository.Name'], '/')[1] }}
 
 stages:
-  - stage: build_and_push
-    displayName: Build & Push Docker image to registry
-    jobs:
-      - template: consumer/jobs/build.yml@platform
-        parameters:
-          containerRegistryUrl: $(containerRegistryUrl)
-          containerRegistryServiceConnection: $(containerRegistryServiceConnection)
-          unitTestProject: ${{ parameters.unitTestProject }}
-          packageName: ${{ parameters.packageName }}
-          ddlFileName: ${{ parameters.ddlFileName }}
-          buildNumber: $(buildNumber)
-          workingDirectory: ${{ parameters.workingDirectory }}
+  - template: consumer/stages/build-and-push.yml@platform
+    parameters:
+      containerRegistryUrl: $(containerRegistryUrl)
+      containerRegistryServiceConnection: $(containerRegistryServiceConnection)
+      unitTestProject: ${{ parameters.unitTestProject }}
+      packageName: ${{ parameters.packageName }}
+      ddlFileName: ${{ parameters.ddlFileName }}
+      buildNumber: $(buildNumber)
+      workingDirectory: ${{ parameters.workingDirectory }}
 
-  - stage: deploy_to_aca
-    displayName: Deploy to ACA
-    dependsOn:
-      - build_and_push
-    jobs:
-      - template: consumer/jobs/deploy-to-aca.yml@platform
-        parameters:
-          containerRegistryUrl: $(containerRegistryUrl)
-          buildNumber: $(buildNumber)
-          workingDirectory: ${{ parameters.workingDirectory }}
+  - template: consumer/stages/dev.yml@platform
+    parameters:
+      containerRegistryUrl: $(containerRegistryUrl)
+      buildNumber: $(buildNumber)
+      workingDirectory: ${{ parameters.workingDirectory }}

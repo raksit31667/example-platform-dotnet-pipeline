@@ -18,7 +18,7 @@ stages:
   - stage: build_and_push
     displayName: Build & Push Docker image to registry
     jobs:
-      - template: consumer/jobs/build-and-push.yml@platform
+      - template: ../jobs/build-and-push.yml@platform
         parameters:
           containerRegistryUrl: ${{ parameters.containerRegistryUrl }}
           containerRegistryServiceConnection: ${{ parameters.containerRegistryServiceConnection }}

@@ -4,7 +4,7 @@ stages:
     dependsOn:
       - build_and_push
     jobs:
-      - template: consumer/jobs/deploy-to-aca.yml@platform
+      - template: ../jobs/deploy-to-aca.yml@platform
         parameters:
           containerRegistryUrl: ${{ parameters.containerRegistryUrl }}
           buildNumber: ${{ parameters.buildNumber }}

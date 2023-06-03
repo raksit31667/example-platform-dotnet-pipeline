@@ -1,6 +1,6 @@
 stages:
-  - stage: deploy_to_aca
-    displayName: Deploy to ACA
+  - stage: dev
+    displayName: DEV
     dependsOn:
       - build_and_push
     jobs:

@@ -11,7 +11,7 @@ jobs:
     displayName: Deploy
     environment: exampleplatformaca
     variables:
-      - group: exampleplatformaca
+      - group: exampleplatformacasg
       - name: terraformVersion
         value: '1.3.0'
       - name: azureSubscriptionServiceConnectionName

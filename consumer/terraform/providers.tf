@@ -1,7 +1,7 @@
 terraform {
   backend "azurerm" {
-    resource_group_name  = "example-platform-azure-kubernetes"
-    storage_account_name = var.storage_account_name
+    resource_group_name  = "#{resourceGroupName}#"
+    storage_account_name = "#{terraformStateStorageAccountName}#"
     container_name       = "terraform-state"
     key                  = "${var.repository_name}.tfstate"
   }

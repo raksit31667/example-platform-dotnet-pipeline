@@ -10,10 +10,6 @@ variable "aca_user_identity_id" {
   type = string
 }
 
-variable "storage_account_name" {
-  type = string
-}
-
 variable "acr_url" {
   type = string
 }

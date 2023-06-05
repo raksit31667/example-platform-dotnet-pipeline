@@ -39,7 +39,9 @@ jobs:
               displayName: Insert pipeline variables into terraform.tfvars
               inputs:
                 rootDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline
-                targetFiles: '**/consumer/terraform/terraform.tfvars'
+                targetFiles: |
+                  **/consumer/terraform/terraform.tfvars
+                  **/consumer/terraform/providers.tf
                 escapeType: none
                 enableTransforms: true
 

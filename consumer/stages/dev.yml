@@ -3,6 +3,8 @@ stages:
     displayName: DEV
     dependsOn:
       - build_and_push
+    variables:
+      - pipeline/variables/dev.yml@self
     jobs:
       - template: ../jobs/deploy-to-aca.yml@platform
         parameters:

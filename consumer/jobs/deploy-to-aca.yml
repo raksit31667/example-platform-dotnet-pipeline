@@ -16,14 +16,6 @@ jobs:
         value: '1.3.0'
       - name: azureSubscriptionServiceConnectionName
         value: example-platform-azure-kubernetes
-      - name: resourceGroupName
-        value: example-platform-azure-kubernetes
-      - name: terraformStateStorageAccountName
-        value: exampleplatformacastate
-      - name: terraformStateStorageAccountContainerName
-        value: terraform-state
-      - name: deploymentEnvironment
-        value: exampleplatformaca
     strategy:
       runOnce:
         deploy:

@@ -5,13 +5,14 @@ parameters:
     type: string
   - name: workingDirectory
     type: string
+  - name: region
+    type: string
 
 jobs:
-  - deployment: deploy
-    displayName: Deploy
-    environment: exampleplatformaca
+  - deployment: ${{ format('deploy_{0}', lower(parameters.region)) }}
+    displayName: ${{ format('Deploy ACA to {0}', upper(parameters.region)) }}
+    environment: ${{ variables.deploymentEnvironment }}
     variables:
-      - group: exampleplatformacasg
       - name: terraformVersion
         value: '1.3.0'
       - name: azureSubscriptionServiceConnectionName

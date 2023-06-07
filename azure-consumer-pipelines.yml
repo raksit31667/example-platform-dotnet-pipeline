@@ -8,6 +8,11 @@ parameters:
   - name: workingDirectory
     type: string
     default: $(Build.SourcesDirectory)/$(buildRepositoryName)
+  - name: deploymentRegions
+    type: object
+    default:
+      - AU
+      - US
 
 variables:
   - name: containerRegistryUrl
@@ -39,3 +44,11 @@ stages:
       containerRegistryUrl: $(containerRegistryUrl)
       buildNumber: $(buildNumber)
       workingDirectory: ${{ parameters.workingDirectory }}
+
+  - ${{ each region in parameters.deploymentRegions }}:
+      - template: consumer/stages/prod.yml@platform
+        parameters:
+          containerRegistryUrl: $(containerRegistryUrl)
+          buildNumber: $(buildNumber)
+          workingDirectory: ${{ parameters.workingDirectory }}
+          region: ${{ region }}

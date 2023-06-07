@@ -4,10 +4,20 @@ stages:
     dependsOn:
       - build_and_push
     variables:
-      - pipeline/variables/dev.yml@self
+      - group: exampleplatformacasg
+      - name: resourceGroupName
+        value: example-platform-azure-kubernetes
+      - name: terraformStateStorageAccountName
+        value: exampleplatformacatfsg
+      - name: terraformStateStorageAccountContainerName
+        value: terraform-state
+      - name: deploymentEnvironment
+        value: exampleplatformaca
+      - template: pipeline/variables/dev.yml@self
     jobs:
       - template: ../jobs/deploy-to-aca.yml@platform
         parameters:
           containerRegistryUrl: ${{ parameters.containerRegistryUrl }}
           buildNumber: ${{ parameters.buildNumber }}
           workingDirectory: ${{ parameters.workingDirectory }}
+          region: SG

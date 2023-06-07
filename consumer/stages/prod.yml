@@ -1,0 +1,23 @@
+stages:
+  - stage: ${{ format('prod_{0}', lower(parameters.region)) }}
+    displayName: ${{ format('PROD {0}', upper(parameters.region)) }}
+    dependsOn:
+      - dev
+    variables:
+      - group: ${{ format('exampleplatformaca{0}', lower(parameters.region)) }}
+      - name: resourceGroupName
+        value: ${{ format('example-platform-aca-prod-{0}', lower(parameters.region)) }}
+      - name: terraformStateStorageAccountName
+        value: ${{ format('exampleplatformacatf{0}', lower(parameters.region)) }}
+      - name: terraformStateStorageAccountContainerName
+        value: terraform-state
+      - name: deploymentEnvironment
+        value: ${{ format('exampleplatformaca{0}', lower(parameters.region)) }}
+      - template: pipeline/variables/prod.yml@self
+    jobs:
+      - template: ../jobs/deploy-to-aca.yml@platform
+        parameters:
+          containerRegistryUrl: ${{ parameters.containerRegistryUrl }}
+          buildNumber: ${{ parameters.buildNumber }}
+          workingDirectory: ${{ parameters.workingDirectory }}
+          region: ${{ parameters.region }}

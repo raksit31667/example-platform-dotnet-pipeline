@@ -2,7 +2,7 @@ resource "azurerm_container_app" "aca" {
   count                        = length(var.cron_jobs) == 0 ? 1 : 0
   name                         = var.repository_name
   container_app_environment_id = var.aca_environment_id
-  resource_group_name          = "example-platform-azure-kubernetes"
+  resource_group_name          = var.resource_group_name
   revision_mode                = "Single"
 
   identity {
@@ -59,7 +59,7 @@ resource "azurerm_container_app" "aca_cron" {
   count                        = length(var.cron_jobs) > 0 ? 1 : 0
   name                         = var.repository_name
   container_app_environment_id = var.aca_environment_id
-  resource_group_name          = "example-platform-azure-kubernetes"
+  resource_group_name          = var.resource_group_name
   revision_mode                = "Single"
 
   identity {

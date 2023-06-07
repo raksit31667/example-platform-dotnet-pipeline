@@ -1,4 +1,5 @@
 repository_name      = "#{buildRepositoryName}#"
+resource_group_name  = "#{resourceGroupName}#"
 aca_environment_id   = "#{acaEnvironmentId}#"
 aca_user_identity_id = "#{acaUserIdentityId}#"
 acr_url              = "#{containerRegistryUrl}#"

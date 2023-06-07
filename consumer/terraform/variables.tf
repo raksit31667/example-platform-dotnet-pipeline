@@ -2,6 +2,10 @@ variable "repository_name" {
   type = string
 }
 
+variable "resource_group_name" {
+  type = string
+}
+
 variable "aca_environment_id" {
   type = string
 }

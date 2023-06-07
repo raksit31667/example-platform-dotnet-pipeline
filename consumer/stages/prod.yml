@@ -11,8 +11,6 @@ stages:
         value: ${{ format('exampleplatformacatf{0}', lower(parameters.region)) }}
       - name: terraformStateStorageAccountContainerName
         value: terraform-state
-      - name: deploymentEnvironment
-        value: ${{ format('exampleplatformaca{0}', lower(parameters.region)) }}
       - template: pipeline/variables/prod.yml@self
     jobs:
       - template: ../jobs/deploy-to-aca.yml@platform

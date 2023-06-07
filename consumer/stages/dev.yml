@@ -11,8 +11,6 @@ stages:
         value: exampleplatformacatfsg
       - name: terraformStateStorageAccountContainerName
         value: terraform-state
-      - name: deploymentEnvironment
-        value: exampleplatformaca
       - template: pipeline/variables/dev.yml@self
     jobs:
       - template: ../jobs/deploy-to-aca.yml@platform

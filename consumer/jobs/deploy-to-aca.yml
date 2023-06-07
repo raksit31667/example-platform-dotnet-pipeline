@@ -11,12 +11,14 @@ parameters:
 jobs:
   - deployment: ${{ format('deploy_{0}', lower(parameters.region)) }}
     displayName: ${{ format('Deploy ACA to {0}', upper(parameters.region)) }}
-    environment: ${{ variables.deploymentEnvironment }}
     variables:
+      - name: deploymentEnvironment
+        value: ${{ format('exampleplatformaca{0}', lower(parameters.region)) }}
       - name: terraformVersion
         value: '1.3.0'
       - name: azureSubscriptionServiceConnectionName
         value: example-platform-azure-kubernetes
+    environment: ${{ variables.deploymentEnvironment }}
     strategy:
       runOnce:
         deploy:

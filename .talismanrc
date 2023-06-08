@@ -1,0 +1,6 @@
+fileignoreconfig:
+- filename: poetry.lock
+  checksum: 4f85e8e722f11bbd0d3fc202c00badc83369567c7fff55b6940a5712ebbc30dd
+- filename: tests/fixtures/dotnet/unit-tests/no-coverlet/Consumer.UnitTests/TestResults/Consumer.UnitTests.trx
+  checksum: b9c3db1852c835d97a05e390a7c06e15f3601ab5ebe132aefbabf4605c8e3d73
+version: ""

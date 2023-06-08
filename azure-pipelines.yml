@@ -33,14 +33,14 @@ stages:
               versionSpec: 3.9
 
           - bash: |
-              python -m pip install --upgrade pip
-              pip install pipenv
-            displayName: Install pipenv
+              curl -sSL https://install.python-poetry.org | python3 -
+              echo "##vso[task.prependpath]$HOME/.poetry/bin"
+            displayName: Install poetry and Update the PATH environment variable
 
-          - bash: pipenv install
+          - bash: poetry install
             displayName: Install dependencies
 
-          - bash: pipenv run pytest
+          - bash: poetry run pytest
             displayName: Run unit tests
 
   - stage: build_and_push_docker_base_images

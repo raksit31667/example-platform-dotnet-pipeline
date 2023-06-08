@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "example-platform-dotnet-pipeline"
+version = "0.1.0"
+description = "Example of Pipeline-as-a-Service for .NET powered by Azure DevOps"
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [{include = "example_platform_dotnet_pipeline"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pytest = "^7.3.1"
+autopep8 = "^2.0.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

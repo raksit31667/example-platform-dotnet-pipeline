@@ -37,7 +37,7 @@ stages:
               echo "##vso[task.prependpath]$HOME/.poetry/bin"
             displayName: Install poetry and Update the PATH environment variable
 
-          - bash: poetry install
+          - bash: poetry install --no-root
             displayName: Install dependencies
 
           - bash: poetry run pytest

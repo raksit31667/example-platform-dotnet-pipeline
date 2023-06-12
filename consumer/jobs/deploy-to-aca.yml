@@ -19,6 +19,7 @@ jobs:
       - name: azureSubscriptionServiceConnectionName
         value: example-platform-azure-kubernetes
     environment: ${{ variables.deploymentEnvironment }}
+    timeoutInMinutes: 5
     strategy:
       runOnce:
         deploy:
@@ -93,4 +94,3 @@ jobs:
                 scriptLocation: scriptPath
                 scriptPath: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/aca_readiness_check.sh
                 arguments: '$(buildRepositoryName) $(resourceGroupName) $(buildNumber)'
-              timeoutInMinutes: 5

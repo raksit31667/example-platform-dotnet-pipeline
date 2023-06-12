@@ -93,3 +93,4 @@ jobs:
                 scriptLocation: scriptPath
                 scriptPath: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/aca_readiness_check.sh
                 arguments: '$(buildRepositoryName) $(resourceGroupName) $(buildNumber)'
+              timeoutInMinutes: 5

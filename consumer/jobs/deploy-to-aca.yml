@@ -37,15 +37,15 @@ jobs:
             - bash: |
                 cat ${{ parameters.workingDirectory }}/pipeline/aca/terraform.tfvars >> terraform.tfvars
               displayName: Combine consumer-provided and platform-provided terraform.tfvars files
-              workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform
+              workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform/application/application
 
             - task: qetza.replacetokens.replacetokens-task.replacetokens@3
               displayName: Insert pipeline variables into terraform.tfvars
               inputs:
                 rootDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline
                 targetFiles: |
-                  **/consumer/terraform/terraform.tfvars
-                  **/consumer/terraform/providers.tf
+                  **/consumer/terraform/application/terraform.tfvars
+                  **/consumer/terraform/application/providers.tf
                 escapeType: none
                 enableTransforms: true
 
@@ -59,7 +59,7 @@ jobs:
                 backendAzureRmStorageAccountName: ${{ variables.terraformStateStorageAccountName }}
                 backendAzureRmContainerName: ${{ variables.terraformStateStorageAccountContainerName }}
                 backendAzureRmKey: $(buildRepositoryName).tfstate
-                workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform
+                workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform/application
 
             - task: TerraformCLI@0
               displayName: Terraform validate
@@ -67,7 +67,7 @@ jobs:
                 command: validate
                 backendType: azurerm
                 environmentServiceName: ${{ variables.azureSubscriptionServiceConnectionName }}
-                workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform
+                workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform/application
 
             - task: TerraformCLI@0
               displayName: Terraform plan
@@ -76,7 +76,7 @@ jobs:
                 backendType: azurerm
                 commandOptions: -out=tfplan -input=false
                 environmentServiceName: ${{ variables.azureSubscriptionServiceConnectionName }}
-                workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform
+                workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform/application
 
             - task: TerraformCLI@0
               displayName: Terraform apply
@@ -84,7 +84,7 @@ jobs:
                 command: apply
                 backendType: azurerm
                 environmentServiceName: ${{ variables.azureSubscriptionServiceConnectionName }}
-                workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform
+                workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform/application
 
             - task: AzureCLI@2
               displayName: ACA Readiness check

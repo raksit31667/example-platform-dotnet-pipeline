@@ -37,7 +37,7 @@ jobs:
             - bash: |
                 cat ${{ parameters.workingDirectory }}/pipeline/aca/terraform.tfvars >> terraform.tfvars
               displayName: Combine consumer-provided and platform-provided terraform.tfvars files
-              workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform/application/application
+              workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform/application
 
             - task: qetza.replacetokens.replacetokens-task.replacetokens@3
               displayName: Insert pipeline variables into terraform.tfvars

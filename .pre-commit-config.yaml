@@ -3,8 +3,10 @@ repos:
     rev: v1.2.0
     hooks:
       - id: shell_linting
+        name: shell_linting_platform
         args: ["platform"]
       - id: shell_linting
+        name: shell_linting_consumer
         args: ["consumer"]
       - id: dockerfile_linting
         args: ["docker"]

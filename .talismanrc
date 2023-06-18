@@ -7,4 +7,8 @@ fileignoreconfig:
   checksum: 79e81d6b7a8f129bd26e74c5e6c0f0db01577f9fdeb326f8913610e4e0db5c21
 - filename: docker/http_stub_server_proxy/nginx.conf
   checksum: d80391182f5be3586df4526130d81bed39bee0388f52e040e62a8165d064bd07
+- filename: consumer/terraform/http-stub-server/providers.tf
+  checksum: a9f396d86d23f31087449784402f3766528b5f58663746759910de399e488dcd
+- filename: consumer/jobs/deploy-http-stub-server-to-aca.yml
+  checksum: f88956d51b2b085d558f89ab341d51a52fb85ce3c3248cb9769a34463d1399fa
 version: ""

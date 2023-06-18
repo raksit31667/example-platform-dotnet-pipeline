@@ -1,0 +1,83 @@
+parameters:
+  - name: containerRegistryUrl
+    type: string
+  - name: httpStubServerName
+    type: string
+    default: example-platform-http-stub
+  - name: workingDirectory
+    type: string
+  - name: region
+    type: string
+
+jobs:
+  - deployment: ${{ format('deploy_http_stub_server_{0}', lower(parameters.region)) }}
+    displayName: ${{ format('Deploy HTTP stub server ACA to {0}', upper(parameters.region)) }}
+    variables:
+      - name: deploymentEnvironment
+        value: ${{ format('exampleplatformaca{0}', lower(parameters.region)) }}
+      - name: terraformVersion
+        value: '1.3.0'
+      - name: azureSubscriptionServiceConnectionName
+        value: example-platform-azure-kubernetes
+    environment: ${{ variables.deploymentEnvironment }}
+    timeoutInMinutes: 5
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - checkout: self
+              persistCredentials: true
+
+            - checkout: platform
+
+            - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+              displayName: Install Terraform
+              inputs:
+                terraformVersion: $(terraformVersion)
+
+            - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+              displayName: Insert pipeline variables into terraform.tfvars
+              inputs:
+                rootDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline
+                targetFiles: |
+                  **/consumer/terraform/http-stub-server/terraform.tfvars
+                  **/consumer/terraform/http-stub-server/providers.tf
+                escapeType: none
+                enableTransforms: true
+
+            - task: TerraformCLI@0
+              displayName: Terraform init
+              inputs:
+                command: init
+                backendType: azurerm
+                backendServiceArm: ${{ variables.azureSubscriptionServiceConnectionName }}
+                backendAzureRmResourceGroupName: ${{ variables.resourceGroupName }}
+                backendAzureRmStorageAccountName: ${{ variables.terraformStateStorageAccountName }}
+                backendAzureRmContainerName: ${{ variables.terraformStateStorageAccountContainerName }}
+                backendAzureRmKey: $(httpStubServerName).tfstate
+                workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform/http-stub-server
+
+            - task: TerraformCLI@0
+              displayName: Terraform validate
+              inputs:
+                command: validate
+                backendType: azurerm
+                environmentServiceName: ${{ variables.azureSubscriptionServiceConnectionName }}
+                workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform/http-stub-server
+
+            - task: TerraformCLI@0
+              displayName: Terraform plan
+              inputs:
+                command: plan
+                backendType: azurerm
+                commandOptions: -out=tfplan -input=false
+                environmentServiceName: ${{ variables.azureSubscriptionServiceConnectionName }}
+                workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform/http-stub-server
+
+            - task: TerraformCLI@0
+              displayName: Terraform apply
+              inputs:
+                command: apply
+                backendType: azurerm
+                environmentServiceName: ${{ variables.azureSubscriptionServiceConnectionName }}
+                workingDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/terraform/http-stub-server

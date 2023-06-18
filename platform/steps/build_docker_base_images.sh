@@ -24,14 +24,14 @@ echo "Building Docker base image for running .NET application..."
 docker build -t "$DOCKER_REGISTRY/base-application" "$BASE_APPLICATION_DOCKERFILE_DIRECTORY"
 echo
 
-HTTP_STUBBING_DOCKERFILE_DIRECTORY="$(cd "$SCRIPT_DIRECTORY/../../docker/http_stubbing" && pwd)"
+HTTP_STUB_SERVER_DOCKERFILE_DIRECTORY="$(cd "$SCRIPT_DIRECTORY/../../docker/http_stub_server" && pwd)"
 
-echo "Building HTTP stubbing image for integration testing..."
-docker build -t "$DOCKER_REGISTRY/http-stubbing" "$HTTP_STUBBING_DOCKERFILE_DIRECTORY"
+echo "Building HTTP stub server image for integration testing..."
+docker build -t "$DOCKER_REGISTRY/http-stub-server" "$HTTP_STUB_SERVER_DOCKERFILE_DIRECTORY"
 echo
 
-HTTP_STUBBING_PROXY_DOCKERFILE_DIRECTORY="$(cd "$SCRIPT_DIRECTORY/../../docker/http_stubbing_proxy" && pwd)"
+HTTP_STUB_SERVER_PROXY_DOCKERFILE_DIRECTORY="$(cd "$SCRIPT_DIRECTORY/../../docker/http_stub_server_proxy" && pwd)"
 
-echo "Building HTTP stubbing reverse proxy image for integration testing..."
-docker build -t "$DOCKER_REGISTRY/http-stubbing-proxy" "$HTTP_STUBBING_PROXY_DOCKERFILE_DIRECTORY"
+echo "Building HTTP stub server reverse proxy image for integration testing..."
+docker build -t "$DOCKER_REGISTRY/http-stub-server-proxy" "$HTTP_STUB_SERVER_PROXY_DOCKERFILE_DIRECTORY"
 echo

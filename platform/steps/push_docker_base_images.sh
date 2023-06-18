@@ -14,10 +14,10 @@ echo "Pushing Docker base image for running .NET application..."
 docker push "$DOCKER_REGISTRY/base-application"
 echo
 
-echo "Pushing Docker base image for running HTTP stubbing server..."
-docker push "$DOCKER_REGISTRY/http-stubbing"
+echo "Pushing Docker base image for running HTTP stub server..."
+docker push "$DOCKER_REGISTRY/http-stub-server"
 echo
 
-echo "Pushing Docker base image for running HTTP stubbing reverse proxy..."
-docker push "$DOCKER_REGISTRY/http-stubbing-proxy"
+echo "Pushing Docker base image for running HTTP stub reverse proxy..."
+docker push "$DOCKER_REGISTRY/http-stub-server-proxy"
 echo

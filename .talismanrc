@@ -3,8 +3,8 @@ fileignoreconfig:
   checksum: 4f85e8e722f11bbd0d3fc202c00badc83369567c7fff55b6940a5712ebbc30dd
 - filename: tests/fixtures/dotnet/unit-tests/no-coverlet/Consumer.UnitTests/TestResults/Consumer.UnitTests.trx
   checksum: b9c3db1852c835d97a05e390a7c06e15f3601ab5ebe132aefbabf4605c8e3d73
-- filename: docker/http_stubbing_proxy/Dockerfile
+- filename: docker/http_stub_server_proxy/Dockerfile
   checksum: 79e81d6b7a8f129bd26e74c5e6c0f0db01577f9fdeb326f8913610e4e0db5c21
-- filename: docker/http_stubbing_proxy/nginx.conf
+- filename: docker/http_stub_server_proxy/nginx.conf
   checksum: d80391182f5be3586df4526130d81bed39bee0388f52e040e62a8165d064bd07
 version: ""

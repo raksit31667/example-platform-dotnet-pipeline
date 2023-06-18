@@ -29,3 +29,9 @@ HTTP_STUBBING_DOCKERFILE_DIRECTORY="$(cd "$SCRIPT_DIRECTORY/../../docker/http_st
 echo "Building HTTP stubbing image for integration testing..."
 docker build -t "$DOCKER_REGISTRY/http-stubbing" "$HTTP_STUBBING_DOCKERFILE_DIRECTORY"
 echo
+
+HTTP_STUBBING_PROXY_DOCKERFILE_DIRECTORY="$(cd "$SCRIPT_DIRECTORY/../../docker/http_stubbing_proxy" && pwd)"
+
+echo "Building HTTP stubbing reverse proxy image for integration testing..."
+docker build -t "$DOCKER_REGISTRY/http-stubbing" "$HTTP_STUBBING_PROXY_DOCKERFILE_DIRECTORY"
+echo

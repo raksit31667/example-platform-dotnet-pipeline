@@ -1,9 +1,13 @@
 repos:
   - repo: https://github.com/raksit31667/example-platform-pre-commit.git
-    rev: v1.1.0
+    rev: v1.2.0
     hooks:
       - id: shell_linting
+        args: ["platform"]
+      - id: shell_linting
+        args: ["consumer"]
       - id: dockerfile_linting
+        args: ["docker"]
   - repo: https://github.com/thoughtworks/talisman
     rev: v1.31.0
     hooks:

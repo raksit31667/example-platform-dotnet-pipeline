@@ -1,0 +1,35 @@
+parameters:
+  - name: containerRegistryUrl
+    type: string
+  - name: integrationTestProject
+    type: string
+  - name: workingDirectory
+    type: string
+
+jobs:
+  - job: integration_tests
+    displayName: Integration tests
+    steps:
+      - checkout: self
+        persistCredentials: true
+
+      - checkout: platform
+
+      - task: FileTransform@1
+        displayName: Update integration test client base URL
+        inputs:
+          folderPath: ${{ parameters.workingDirectory }}
+          targetFiles: '**/appsettings.json'
+          fileType: json
+
+      - bash: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/run_integration_tests.sh ${{ parameters.containerRegistryUrl }} $(pwd) ${{ parameters.integrationTestProject }}
+        workingDirectory: ${{ parameters.workingDirectory }}
+        displayName: Run integration tests
+
+      - task: PublishTestResults@2
+        displayName: Publish integration test results
+        condition: succeededOrFailed()
+        inputs:
+          testResultsFormat: VSTest
+          testResultsFiles: '**/*.trx'
+          testRunTitle: Integration test

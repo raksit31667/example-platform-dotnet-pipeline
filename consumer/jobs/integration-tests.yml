@@ -1,6 +1,8 @@
 parameters:
   - name: containerRegistryUrl
     type: string
+  - name: containerRegistryServiceConnection
+    type: string
   - name: integrationTestProject
     type: string
   - name: workingDirectory
@@ -14,6 +16,12 @@ jobs:
         persistCredentials: true
 
       - checkout: platform
+
+      - task: Docker@2
+        displayName: Login to ACR
+        inputs:
+          command: login
+          containerRegistry: ${{ parameters.containerRegistryServiceConnection }}
 
       - task: FileTransform@1
         displayName: Update integration test client base URL

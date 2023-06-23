@@ -21,3 +21,7 @@ echo
 echo "Pushing Docker base image for running HTTP stub reverse proxy..."
 docker push "$DOCKER_REGISTRY/http-stub-server-proxy"
 echo
+
+echo "Pushing Docker base image for running Helm commands..."
+docker push "$DOCKER_REGISTRY/helm"
+echo

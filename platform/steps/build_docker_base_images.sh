@@ -35,3 +35,13 @@ HTTP_STUB_SERVER_PROXY_DOCKERFILE_DIRECTORY="$(cd "$SCRIPT_DIRECTORY/../../docke
 echo "Building HTTP stub server reverse proxy image for integration testing..."
 docker build -t "$DOCKER_REGISTRY/http-stub-server-proxy" "$HTTP_STUB_SERVER_PROXY_DOCKERFILE_DIRECTORY"
 echo
+
+HELM_DOCKERFILE_DIRECTORY="$(cd "$SCRIPT_DIRECTORY/../../docker/helm" && pwd)"
+HELM_COMMAND_DIRECTORY="$(cd "$SCRIPT_DIRECTORY/../../consumer/steps/helm" && pwd)"
+
+echo "Building Docker base image for running Helm commands..."
+docker build \
+  -f "$HELM_DOCKERFILE_DIRECTORY/Dockerfile" \
+  -t "$DOCKER_REGISTRY/helm" \
+  "$HELM_COMMAND_DIRECTORY"
+echo

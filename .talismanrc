@@ -11,4 +11,6 @@ fileignoreconfig:
   checksum: a9f396d86d23f31087449784402f3766528b5f58663746759910de399e488dcd
 - filename: consumer/jobs/deploy-http-stub-server-to-aca.yml
   checksum: f88956d51b2b085d558f89ab341d51a52fb85ce3c3248cb9769a34463d1399fa
+- filename: docker/helm/Dockerfile
+  checksum: 637611d9fddac58db8cd6babb288cfeb426f4c1bc78ec6c122c3eb041ee1f440
 version: ""

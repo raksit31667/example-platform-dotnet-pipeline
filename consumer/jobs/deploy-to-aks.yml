@@ -66,7 +66,7 @@ jobs:
                   ${{ parameters.buildNumber }} \
                   '/${{ parameters.kubernetesNamespace }}/$(buildRepositoryName)/*' \
                   $(Build.SourcesDirectory)/$(buildRepositoryName)/pipeline/aks/values.yaml \
-                  $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/helm/chart/application \
+                  $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/helm/chart/example-platform-application \
 
               displayName: Deploy to AKS
 

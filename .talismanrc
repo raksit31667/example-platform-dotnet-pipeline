@@ -13,4 +13,8 @@ fileignoreconfig:
   checksum: f88956d51b2b085d558f89ab341d51a52fb85ce3c3248cb9769a34463d1399fa
 - filename: docker/helm/Dockerfile
   checksum: 637611d9fddac58db8cd6babb288cfeb426f4c1bc78ec6c122c3eb041ee1f440
+- filename: consumer/helm/chart/example-platform-application/templates/ingress.yaml
+  checksum: b99fa2c383541399bfa3076a762196d24c329a2b78f8ec7e9d69be4baea865b9
+- filename: consumer/helm/chart/example-platform-application/values.yaml
+  checksum: b1d022ec65b65e5ce693f5f3d984036dad4c560894fa01bb2181ceca2de22ef6
 version: ""

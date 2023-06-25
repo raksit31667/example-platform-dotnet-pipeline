@@ -52,7 +52,7 @@ jobs:
               inputs:
                 rootDirectory: $(Build.SourcesDirectory)/example-platform-dotnet-pipeline
                 targetFiles: |
-                  **/consumer/helm/application/values.yaml
+                  **/consumer/helm/chart/example-platform-application/values.yaml
                 escapeType: none
                 enableTransforms: true
 

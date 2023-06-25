@@ -16,13 +16,11 @@ jobs:
   - deployment: ${{ format('deploy_aks_{0}', lower(parameters.region)) }}
     displayName: ${{ format('Deploy AKS to {0}', upper(parameters.region)) }}
     variables:
-      - name: deploymentEnvironment
-        value: ${{ format('exampleplatformaks{0}', lower(parameters.region)) }}
       - name: terraformVersion
         value: '1.3.0'
       - name: azureSubscriptionServiceConnectionName
         value: example-platform-azure-kubernetes
-    environment: ${{ variables.deploymentEnvironment }}
+    environment: exampleplatformaks
     timeoutInMinutes: 5
     strategy:
       runOnce:

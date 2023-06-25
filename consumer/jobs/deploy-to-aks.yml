@@ -41,6 +41,7 @@ jobs:
               displayName: kubectl login
               inputs:
                 command: login
+                kubernetesServiceEndpoint: exampleplatformaks
 
             - bash: |
                 echo ${KUBECONFIG}

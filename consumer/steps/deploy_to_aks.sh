@@ -21,8 +21,4 @@ docker run \
   -v "$HELM_VALUES_FILE_DIRECTORY":/values.yaml \
   -v "$HELM_CHART_DIRECTORY":/helm-chart-directory \
   "$DOCKER_REGISTRY/helm" \
-  "/helm_upgrade.sh" \
-  "$KUBERNETES_NAMESPACE" \
-  "$HELM_RELEASE_NAME" \
-  "$BUILD_NUMBER" \
-  "$INGRESS_PATH"
+  "/helm_upgrade.sh" "$KUBERNETES_NAMESPACE" "$HELM_RELEASE_NAME" "$BUILD_NUMBER" "$INGRESS_PATH"

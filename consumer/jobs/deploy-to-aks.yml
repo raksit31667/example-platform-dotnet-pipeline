@@ -58,6 +58,7 @@ jobs:
                 enableTransforms: true
 
             - bash: |
+                trap 'echo "Caught signal SIGTERM, still keep running deployment command" ' SIGTERM
                 $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/steps/deploy_to_aks.sh \
                   $(containerRegistryUrl) \
                   ${{ parameters.kubernetesNamespace }} \
@@ -65,8 +66,8 @@ jobs:
                   ${{ parameters.buildNumber }} \
                   '/${{ parameters.kubernetesNamespace }}/$(buildRepositoryName)/*' \
                   ${{ parameters.workingDirectory }}/pipeline/aks/values.yaml \
-                  $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/helm/chart/example-platform-application \
-
+                  $(Build.SourcesDirectory)/example-platform-dotnet-pipeline/consumer/helm/chart/example-platform-application & PID=`echo $!`
+                wait $PID
               displayName: Deploy to AKS
 
             - task: Kubernetes@1

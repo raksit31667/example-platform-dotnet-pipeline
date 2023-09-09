@@ -36,7 +36,7 @@ stages:
                 az config set extension.use_dynamic_install=yes_without_prompt
                 ACA_FQDN=$(az containerapp show -n example-platform-dotnet-integ -g example-platform-azure-kubernetes --query properties.configuration.ingress.fqdn | tr -d '"')
                 echo "##vso[task.setvariable variable=acaFqdn;isOutput=true]$ACA_FQDN"
-      - template: consumer/jobs/integration-tests.yml@platform
+      - template: ../jobs/integration-tests.yml@platform
         parameters:
           dependsOn: get_aca_fqdn
           variables:

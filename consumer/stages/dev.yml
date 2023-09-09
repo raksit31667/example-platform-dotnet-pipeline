@@ -19,3 +19,30 @@ stages:
           buildNumber: ${{ parameters.buildNumber }}
           workingDirectory: ${{ parameters.workingDirectory }}
           region: SG
+      - job: get_aca_fqdn
+        dependsOn: deploy_sg
+        displayName: Get ACA fully qualified domain name
+        steps:
+          - task: AzureCLI@2
+            name: get_fqdn
+            displayName: Get ACA FQDN
+            inputs:
+              azureSubscription: example-platform-azure-kubernetes
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                set -ex
+
+                az config set extension.use_dynamic_install=yes_without_prompt
+                ACA_FQDN=$(az containerapp show -n example-platform-dotnet-integ -g example-platform-azure-kubernetes --query properties.configuration.ingress.fqdn | tr -d '"')
+                echo "##vso[task.setvariable variable=acaFqdn;isOutput=true]$ACA_FQDN"
+      - template: consumer/jobs/integration-tests.yml@platform
+        parameters:
+          dependsOn: get_aca_fqdn
+          variables:
+            - name: ClientSettings.BaseUrl
+              value: $[ dependencies.get_aca_fqdn.outputs['get_fqdn.acaFqdn'] ]
+          containerRegistryUrl: ${{ parameters.containerRegistryUrl }}
+          containerRegistryServiceConnection: ${{ parameters.containerRegistryServiceConnection }}
+          integrationTestProject: ${{ parameters.integrationTestProject }}
+          workingDirectory: ${{ parameters.workingDirectory }}

@@ -1,6 +1,8 @@
 parameters:
   - name: unitTestProject
     type: string
+  - name: integrationTestProject
+    type: string
   - name: packageName
     type: string
   - name: ddlFileName
@@ -42,6 +44,8 @@ stages:
   - template: consumer/stages/dev.yml@platform
     parameters:
       containerRegistryUrl: $(containerRegistryUrl)
+      containerRegistryServiceConnection: $(containerRegistryServiceConnection)
+      integrationTestProject: ${{ parameters.integrationTestProject }}
       buildNumber: $(buildNumber)
       workingDirectory: ${{ parameters.workingDirectory }}
 

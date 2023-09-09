@@ -1,4 +1,10 @@
 parameters:
+  - name: dependsOn
+    type: object
+    default: []
+  - name: variables
+    type: object
+    default: []
   - name: containerRegistryUrl
     type: string
   - name: containerRegistryServiceConnection
@@ -11,6 +17,8 @@ parameters:
 jobs:
   - job: integration_tests
     displayName: Integration tests
+    dependsOn: ${{ parameters.dependsOn }}
+    variables: ${{ parameters.variables }}
     steps:
       - checkout: self
         persistCredentials: true
